@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class PartA {
 
     static ArrayList<ArrayList> DNA = new ArrayList<ArrayList>();
+    static ArrayList<ArrayList> nxtGenDNA = new ArrayList<ArrayList>();
     static ArrayList<Integer> Fitness = new ArrayList<Integer>();
 
     public PartA()
@@ -91,22 +92,69 @@ public class PartA {
         }
     }
 
+    public static void Selection(int gen)
+    {
+        ArrayList<Integer> position = new ArrayList<Integer>();
+        position.add(0);
+
+        for(int k = 0 ; k < gen ; k++)
+        {
+            int div = (Fitness.size()/2);
+            for (int i = 0; i < div; i++)
+            {
+
+                int max = 0;
+
+
+                 for (int j = 0; j < Fitness.size(); j++)
+                    {
+                        if ((Fitness.get(j) > max) )
+                        {
+                            max = Fitness.get(j);
+                            position.set(0,j);
+                            Fitness.remove(position.get(j));
+                        }
+                }
+                nxtGenDNA.add(DNA.get(position.get(0)));
+
+            }
+        }
+        System.out.println("The Children");
+        System.out.println(nxtGenDNA);
+    }
+
+//    public static int findmax()
+//    {
+//        int max = 0;
+//        int position = 0 ;
+//        for (int i = 0; i < Fitness.size(); i++)
+//        {
+//
+//            if ((Fitness.get(i) > max) || Fitness.get(i) == 4)
+//            {
+//                max = Fitness.get(i);
+//                position = i;
+//            }
+//        }
+//        return position;
+//    }
+
     public static int getRandom(int min, int max) {
-        //System.out.println(rand.nextInt((max - min) + 1) + min);
+
         return rand.nextInt((max - min) + 1) + min;
 
     }
 
     public static void main(String[] args)
     {
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 10; i++)
         {
             binarray();
         }
         fitnesscalc();
         System.out.println(DNA);
         System.out.println(Fitness);
-        
+
         try {
             FileWriter myWriter = new FileWriter("initial_pop_data.txt");
             myWriter.write(String.valueOf(Fitness));
@@ -116,5 +164,6 @@ public class PartA {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+        Selection( 1);
     }
 }
